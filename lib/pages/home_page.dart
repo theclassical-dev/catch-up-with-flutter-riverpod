@@ -19,8 +19,35 @@ class HomePage extends ConsumerStatefulWidget {
 }
 
 class _HomePageState extends ConsumerState<HomePage> {
+  //scroll controller for pagination
+  final ScrollController _allPokenmonListScrollController = ScrollController();
+
   late HomePageController _homePageController;
   late HomePageData _homePageData;
+
+  @override
+  void initState() {
+    super.initState();
+
+    //for the controller
+    _allPokenmonListScrollController.addListener(_scrollListener);
+  }
+
+  @override
+  void dispose() {
+    _allPokenmonListScrollController.removeListener(_scrollListener);
+    _allPokenmonListScrollController.dispose();
+    super.dispose();
+  }
+
+  void _scrollListener() {
+    //check if we have reach the end of the list
+    if (_allPokenmonListScrollController.offset >=
+            _allPokenmonListScrollController.position.maxScrollExtent * 1 &&
+        !_allPokenmonListScrollController.position.outOfRange) {
+      _homePageController.loadData();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -75,6 +102,8 @@ class _HomePageState extends ConsumerState<HomePage> {
           SizedBox(
             height: MediaQuery.sizeOf(context).height * 0.60,
             child: ListView.builder(
+                //pagination
+                controller: _allPokenmonListScrollController,
                 itemCount: _homePageData.data?.results?.length ?? 0,
                 itemBuilder: (context, index) {
                   PokemonListResult pokemon =
