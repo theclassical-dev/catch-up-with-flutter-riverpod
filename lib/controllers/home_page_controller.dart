@@ -29,6 +29,7 @@ class HomePageController extends StateNotifier<HomePageData> {
         state = state.copyWith(
           data: data,
         );
+        print(state.data?.results?.first);
       }
     } else {}
   }
