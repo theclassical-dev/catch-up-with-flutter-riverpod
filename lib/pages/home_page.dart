@@ -73,9 +73,11 @@ class _HomePageState extends ConsumerState<HomePage> {
           SizedBox(
             height: MediaQuery.sizeOf(context).height * 0.60,
             child: ListView.builder(
-                itemCount: 0,
+                itemCount: _homePageData.data?.results?.length ?? 0,
                 itemBuilder: (context, index) {
-                  return ListTile();
+                  return ListTile(
+                    title: Text(index.toString()),
+                  );
                 }),
           )
         ],
